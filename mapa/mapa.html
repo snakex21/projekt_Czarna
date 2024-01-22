@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Czarnej z XIX wieku</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <script src="formScript.js"></script>
+    <script src="formularz.js"></script>
+    <div id="mapContainer">
+
+        <div id="map"></div>
+        <div id="mouse-coordinates" style="position: absolute; top: 10px; left: 10px; z-index: 1000; background: rgba(255, 255, 255, 0.8); padding: 5px; border-radius: 5px;">Coordinates: </div>
+
+        <div id="parcelsPanel">
+            <input type="text" id="parcelSearch" placeholder="Wyszukaj działki..." list="parcelList">
+            <button id="addParcelButton">+ Dodaj działkę</button>
+
+
+
+            <!-- Ikonki działek (możliwe, że będziesz chciał je ukryć lub usunąć) -->
+            <div class="parcelIcon"><a href="url_do_strony_dzialki2">801/7</a></div>
+            <!-- Przykładowa ikona działki -->
+            <div class="parcelIcon"><a href="url_do_strony_dzialki2">1153</a></div>
+            <div class="parcelIcon"><a href="url_do_strony_dzialki1">1154</a></div>
+
+            <!-- Kolejna ikona działki -->
+
+        </div>
+
+        <div id="hiddenPanel">
+            <form id="parcelForm">
+                <button type="button" id="backButton">Powrót do mapy</button>
+                <div id="parcelNumberContainer">
+                    <label for="parcelNumber">Numer działki:</label>
+                    <input type="text" id="parcelNumber" name="parcelNumber" required>
+                </div>
+
+                <label>Koordynaty:</label>
+                <div id="coordinatesContainer">
+                    <div class="coordinate">
+                        <input type="text" name="latitude[]" required placeholder="Szerokość geograficzna">
+                        <input type="text" name="longitude[]" required placeholder="Długość geograficzna">
+                    </div>
+                </div>
+                <div id="coordinateButtons">
+                    <button type="button" id="addCoordinate">Dodaj kolejny punkt</button>
+                    <button type="button" id="removeCoordinate">Usuń ostatni punkt</button>
+                </div>
+                <div id="ownerContainer">
+                    <label for="ownerName">Właściciel:</label>
+                    <input type="text" id="ownerName" name="ownerName" required>
+                </div>
+
+
+                <input type="submit" value="Generuj plik działki">
+            </form>
+        </div>
+    </div>
+
+    <div id="bottomPanel">
+        <div id="ownerSearchContainer">
+            <input type="text" id="ownerSearch" placeholder="Wyszukaj właścicieli..." list="ownerList">
+            <button id="addOwnerButton">+ Dodaj właściciela</button>
+
+            <div id="panel" class="side-panel">
+                <form id="addOwnerForm">
+                    <button type="button" id="cancelButton">Powrót do mapy</button>
+                    <input type="text" id="orderNumber" placeholder="Numer Protokołu">
+                    <input type="date" id="protocolDate" placeholder="Data protokołu">
+                    <input type="text" id="protocolLocation" placeholder="Miejsce protokołu">
+                    <input type="text" id="ownerNamenum" placeholder="Imię i nazwisko właściciela">
+                    <input type="text" id="genealogy" placeholder="Genealogia">
+                    <input type="text" id="houseNumber" placeholder="Numer domu">
+                    <input type="text" id="buildingPlots" placeholder="Działki budowlane">
+                    <input type="text" id="agriculturalPlots" placeholder="Działki rolne">
+                    <textarea id="ownershipHistory" placeholder="Historia własności" style="height: 331px; width: 550px;"></textarea>
+                    <textarea id="remarks" placeholder="Uwagi" style="height: 331px; width: 550px;"></textarea>
+                    <button type="submit">Dodaj Właściciela</button>
+                </form>
+            </div>
+
+
+
+            <datalist id="ownerList">
+                <!-- Przykładowe opcje dla autouzupełniania właścicieli -->
+                <option value="Adam">Adam</option>
+                <option value="Ewa">Ewa</option>
+                <option value="Jakub">Jakub</option>
+                <option value="Zuzanna">Zuzanna</option>
+                <option value="Mateusz">Mateusz</option>
+                <option value="Julia">Julia</option>
+                <option value="Michał">Michał</option>
+                <option value="Hanna">Hanna</option>
+                <option value="Kacper">Kacper</option>
+                <option value="Amelia">Amelia</option>
+                <option value="Filip">Filip</option>
+                <option value="Maja">Maja</option>
+                <option value="Aleksander">Aleksander</option>
+                <option value="Alicja">Alicja</option>
+                <option value="Wojciech">Wojciech</option>
+                <option value="Oliwia">Oliwia</option>
+                <option value="Piotr">Piotr</option>
+                <option value="Iga">Iga</option>
+                <option value="Szymon">Szymon</option>
+                <option value="Lena">Lena</option>
+                <option value="Jan">Jan</option>
+                <option value="Natalia">Natalia</option>
+                <option value="Bartosz">Bartosz</option>
+                <option value="Katarzyna">Katarzyna</option>
+                <option value="Tomasz">Tomasz</option>
+                <option value="Magdalena">Magdalena</option>
+                <option value="Paweł">Paweł</option>
+                <option value="Dominika">Dominika</option>
+                <option value="Marcin">Marcin</option>
+                <option value="Karolina">Karolina</option>
+                <option value="Łukasz">Łukasz</option>
+                <option value="Monika">Monika</option>
+                <option value="Grzegorz">Grzegorz</option>
+                <option value="Daria">Daria</option>
+                <option value="Rafał">Rafał</option>
+                <option value="Kamila">Kamila</option>
+                <option value="Daniel">Daniel</option>
+                <option value="Paulina">Paulina</option>
+                <option value="Krzysztof">Krzysztof</option>
+                <option value="Agnieszka">Agnieszka</option>
+                <option value="Jacek">Jacek</option>
+                <option value="Barbara">Barbara</option>
+                <option value="Marek">Marek</option>
+                <option value="Justyna">Justyna</option>
+                <option value="Dawid">Dawid</option>
+                <option value="Anna">Anna</option>
+                <option value="Sebastian">Sebastian</option>
+                <option value="Martyna">Martyna</option>
+                <option value="Andrzej">Andrzej</option>
+                <option value="Klaudia">Klaudia</option>
+                <option value="Mikołaj">Mikołaj</option>
+                <option value="Patrycja">Patrycja</option>
+                <option value="Maciej">Maciej</option>
+                <option value="Joanna">Joanna</option>
+                <option value="Przemysław">Przemysław</option>
+                <option value="Sara">Sara</option>
+                <option value="Arkadiusz">Arkadiusz</option>
+                <option value="Nikola">Nikola</option>
+                <option value="Igor">Igor</option>
+                <option value="Weronika">Weronika</option>
+                <option value="Robert">Robert</option>
+                <option value="Kinga">Kinga</option>
+                <option value="Damian">Damian</option>
+                <option value="Aleksandra">Aleksandra</option>
+                <option value="Konrad">Konrad</option>
+                <option value="Emilia">Emilia</option>
+                <option value="Izabela">Izabela</option>
+                <option value="Norbert">Norbert</option>
+                <option value="Gabriela">Gabriela</option>
+                <option value="Artur">Artur</option>
+                <option value="Natalia">Natalia</option>
+                <option value="Piotr">Piotr</option>
+                <option value="Kornelia">Kornelia</option>
+                <option value="Łukasz">Łukasz</option>
+                <option value="Aneta">Aneta</option>
+                <option value="Adrian">Adrian</option>
+                <option value="Dorota">Dorota</option>
+                <option value="Marcin">Marcin</option>
+                <option value="Elżbieta">Elżbieta</option>
+                <option value="Kamil">Kamil</option>
+                <option value="Beata">Beata</option>
+                <option value="Tadeusz">Tadeusz</option>
+                <option value="Magdalena">Magdalena</option>
+                <option value="Stefan">Stefan</option>
+                <option value="Renata">Renata</option>
+                <option value="Jerzy">Jerzy</option>
+                <option value="Urszula">Urszula</option>
+                <option value="Mariusz">Mariusz</option>
+                <option value="Wawrzyniec">Wawrzyniec</option>
+                <option value="Regina">Regina</option>
+            </datalist>
+        </div>
+        <div id="ownersList">
+            <!-- Ikonki właścicieli (możliwe, że będziesz chciał je ukryć lub usunąć) -->
+            <!-- JavaScript function -->
+            <script>
+                function openOwnerPage(ownerId) {
+                    // You can customize this function based on your needs
+                    openPage('../wlasciciele/szablonok.html?ownerId=' + ownerId);
+                }
+            </script>
+
+
+            <!-- Modified HTML code -->
+            <div class="ownerIcon" onclick="openOwnerPage('Adam_Sak')" id="Adam_Sak">Adam Sak
+                <a href="#"></a>
+            </div>
+
+            <!-- 2 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Michal_Ziaja')" id="Michal_Ziaja">Michał Ziaja
+                <a href="#"></a>
+            </div>
+
+            <!-- 3 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Anna_Micek')" id="Anna_Micek">Anna Micek
+                <a href="#"></a>
+            </div>
+
+            <!-- 4 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Barbara_Sakowa')" id="Barbara_Sakowa">Barbara Sakowa
+                <a href="#"></a>
+            </div>
+
+            <!-- 5 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jakub_Para')" id="Jakub_Para">Jakub Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 6 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Michal_Piekos')" id="Michal_Piekos">Michał Piękoś
+                <a href="#"></a>
+            </div>
+
+            <div class="ownerIcon" onclick="openOwnerPage('Magdalena_Murtasiowa')" id="Magdalena_Murtasiowa">
+                <a href="#">
+                    <span class="ownerFirstName">Magdalena</span>
+                    <span class="ownerLastName">Murtasiowa</span>
+                </a>
+            </div>
+        
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Pych')" id="Jan_Pych">Jan Pych
+                <a href="#"></a>
+            </div>
+
+            <!-- 9 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Wojciech_Para')" id="Wojciech_Para">Wojciech Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 10 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Para')" id="Jozef_Para">Józef Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 11 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Adam_Labudzki')" id="Adam_Labudzki">Adam Łabudzki
+                <a href="#"></a>
+            </div>
+
+            <!-- 12 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Michal_Sak')" id="Michal_Sak">Michał Sak
+                <a href="#"></a>
+            </div>
+
+            <!-- 13 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Para1')" id="Jozef_Para1">Józef Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 14 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Para')" id="Jan_Para">Jan Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 15 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Wojciech_Jaremski')" id="Wojciech_Jaremski">Wojciech Jaremsk
+                <a href="#"></a>
+            </div>
+
+            <!-- 16 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Para_2')" id="Jan_Para2">Jan Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 17 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Knapik_Wawrzyniec')" id="Knapik_Wawrzyniec">Wawryniec Knapik 
+                <a href="#"></a>
+            </div>
+
+            <!-- 18 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Knapik_Adam')" id="Knapik_Adam"> Adam Knapik
+                <a href="#"></a>
+            </div>
+
+            <!-- 19 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Piotr_Augustyn')" id="Piotr_Augustyn">Piotr Augustyn
+                <a href="#"></a>
+            </div>
+
+            <!-- 20 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Adam_Babiarz')" id="Adam_Babiarz">Adam Babiarz
+                <a href="#"></a>
+            </div>
+
+            <!-- 21 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Regina_Socha')" id="Regina_Socha">Regina Socha
+                <a href="#"></a>
+            </div>
+
+            <!-- 22 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jedrzej_Pedrak')" id="Jedrzej_Pedrak">Jędrzej Pędrak
+                <a href="#"></a>
+            </div>
+
+            <!-- 23 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Sak_z_Borowej')" id="Jan_Sak_z_Borowej">Jan Sak z Borowej
+                <a href="#"></a>
+            </div>
+
+            <!-- 24 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Karol_Augustyn')" id="Karol_Augustyn">Karol Augustyn
+                <a href="#"></a>
+            </div>
+
+            <!-- 25 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Wojciech_Pluta')" id="Wojciech_Pluta">Wojciech Pluta
+                <a href="#"></a>
+            </div>
+
+            <!-- 26 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Lapa')" id="Jozef_Lapa">Józef Łapa
+                <a href="#"></a>
+            </div>
+
+            <!-- 27 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Stanislaw_Lapa')" id="Stanislaw_Lapa">Stanisław Łapa
+                <a href="#"></a>
+            </div>
+
+            <!-- 28 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Michal_Socha')" id="Michal_Socha">Michał Socha
+                <a href="#"></a>
+            </div>
+
+            <!-- 29 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Wawrzyniec_Barnas')" id="Wawryniec_Barnas">Wawryniec Barnaś
+                <a href="#"></a>
+            </div>
+
+            <!-- 30 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Blazej_Fuksiewicz')" id="Blazej_Fuksiewicz">Błażej Fuksiewicz
+                <a href="#"></a>
+            </div>
+
+            <!-- 31 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Tomasz_Kusek')" id="Tomasz_Kusek">Tomasz Kusek
+                <a href="#"></a>
+            </div>
+
+            <!-- 32 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Piotr_Partyka')" id="Piotr_Partyka">Piotr Partyka
+                <a href="#"></a>
+            </div>
+
+            <!-- 33 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Wojciech_Cygan')" id="Wojciech_Cygan">Wojciech Cygan
+                <a href="#"></a>
+            </div>
+
+            <!-- 34 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Wincency_Nicos')" id="Wincenty_Nicos">Wincenty Nicoś
+                <a href="#"></a>
+            </div>
+
+            <!-- 35 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Labak')" id="Jan_Labak">Jan Labak
+                <a href="#"></a>
+            </div>
+
+            <!-- 36 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Maciej_Perela')" id="Maciej_Perela">Maciej Perela
+                <a href="#"></a>
+            </div>
+
+            <!-- 37 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Salomon_Grinstein')" id="Salomon_Grinstein">Salomon Grinstein
+                <a href="#"></a>
+            </div>
+
+            <!-- 38 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Jedryas')" id="Jan_Jedras">Jan Jędras
+                <a href="#"></a>
+            </div>
+
+            <!-- 39 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jedrzej_Micek')" id="Jedrzej_Micek">Jędrzej Micek
+                <a href="#"></a>
+            </div>
+
+            <!-- 40 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Knych')" id="Jozef_Knych">Józef Knych
+                <a href="#"></a>
+            </div>
+
+            <!-- 41 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Marcin_Cyboron')" id="Marcin_Cyboron">Marcin Cyboroń
+                <a href="#"></a>
+            </div>
+
+            <!-- 42 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Michal_Tryba')"id="Michal_Tryba">Michał Tryba
+                <a href="#"></a>
+            </div>
+
+            <!-- 43 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Adam_Kaminski')" id="Adam_Kaminski">Adam Kamiński
+                <a href="#"></a>
+            </div>
+
+            <!-- 44 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Ignacy_Lis')" id="Ignacy_Lis">Ignacy Lis
+                <a href="#"></a>
+            </div>
+
+            <!-- 45 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Para_3')" id="Jan_Para_3">Jan Para
+                <a href="#"></a>
+            </div>
+
+            <!-- 46 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Michon')" id="Jozef_Michon">Józef Michoń
+                <a href="#"></a>
+            </div>
+
+            <!-- 47 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Antoni_Garlicki')" id="Antoni_Garlicki">Antoni Garlicki
+                <a href="#"></a>
+            </div>
+
+            <!-- 48 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Stanislaw_Mazur')" id="Stanislaw_Mazur">Stanisław Mazur
+                <a href="#"></a>
+            </div>
+
+            <!-- 49 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Stanislaw_Cyboron')"id="Stanislaw_Cyboron">Stanisław Cyboroń
+                <a href="#"></a>
+            </div>
+
+            <!-- 50 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Kubicki')" id="Jan_Kubicki">Jan Kubicki
+                <a href="#"></a>
+            </div>
+
+            <!-- 51 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jan_Socha')" id="Jan_Socha">Jan Socha
+                <a href="#"></a>
+            </div>
+
+            <!-- 52 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Barnas')" id="Jozef_Barnas">Józef Barnaś
+                <a href="#"></a>
+            </div>
+
+            <!-- 53 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Marianna_Warzala')" id="Marianna_Warzala">Marianna Warżała
+                <a href="#"></a>
+            </div>
+
+            <!-- 54 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Chana_Fisch')" id="Chana_Fisch">Chana Fisch
+                <a href="#"></a>
+            </div>
+
+            <!-- 55 -->
+            <div class="ownerIcon" onclick="openOwnerPage('Jozef_Kubicki')"id="Jozef_Kubicki">Józef Kubicki
+                <a></a>
+            </div>
+
+            <!-- 56 -->
+
+
+
+            <div class="ownerIcon"><a href="Jarosław_Wojciech.html">Jarosław Wojciech</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Para_syn_Jakuba.html">Jan Para (syn Jakuba)</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wawrzyniec_Knopik.html">Wawrzyniec Knopik</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Adam_Knopik.html">Adam Knopik</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Piotr_Augustyn.html">Piotr Augustyn</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_z_Sochów.html">Regina z Sochów</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina z Sochów.html">Regina z Sochów</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jedrzej_Pedrak.html">Jędrzej Pędrak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Sak.html">Jan Sak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Karol_Augustyn.html">Karol Augustyn</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Pluta.html">Wojciech Pluta</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Lopa.html">Józef Łopa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Zofia_z_Labakow_Lapina_i_Jozef_Lapa.html">Zofia z Labaków Łapina i Józef Łapa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marjanna_z_Lapow_Soszyna.html">Marjanna z Łapów Soszyna</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wawryniec_Barnas.html">Wawryniec Barnaś</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Rozalia_Luksiewiczowa.html">Rozalia Łuksiewiczowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marianna_z_Knapikow_Kuskowa.html">Marianna z Knapików Kuskowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Ewa_z_Urbanow_Partykowa.html">Ewa z Urbanów Partykowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Cygan.html">Wojciech Cygan</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wincenty_Nicos.html">Wincenty Nicoś</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Cygan_w_zastep_Jana_Labaka.html">Wojciech Cygan w zastęp. Jana Labaka</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marjanna_Perelina.html">Marjanna Perelina</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Salamon_Grunstein.html">Salamon Grünstein</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Jedras.html">Jan Jedras</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jedrzej_Micek.html">Jędrzej Micek</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Knych.html">Józef Knych</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marcin_Cyboron.html">Marcin Cyboroń</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_Trybowa_Lisowa.html">Regina Trybowa Lisowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Adam_Kaminski.html">Adam Kamiński</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_Kubicka_Lisowa.html">Regina 1° Kubicka 2°o Lisowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Pana_syn_Jedrzeja.html">Jan Pana syn Jędrzeja</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Agata_z_Kubickich_Parzyna.html">Agata z Kubickich Parzyna</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Michon_z_Machowy.html">Józef Michoń z Machowy</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Antoni_Garlicki.html">Antoni Garlicki</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Mazur.html">Stanisław Mazur</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Cyboran1.html">Stanisław Cyboran</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marjanna_z_Plutow_Kubicka.html">Marjanna z Plutów Kubicka</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Pluta_syn_Jedrzeja.html">Wojciech Pluta syn Jędrzeja</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Warzala.html">Jozef Warzała</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Naftali_Hunde.html">Naftali Hunde</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Kubicki.html">Józef Kubicki</a></div>
+
+
+
+
+
+
+
+
+
+
+
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Pych.html">Wojciech Pych</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Para_syn_Jedrzeja.html">Wojciech Para syn Jędrzeja</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jedrzej_Orlow.html">Jędrzej Orłów</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Walenty_Ninczinski.html">Walenty Ninczinski</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Piotr_Pych.html">Piotr Pych</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Socha.html">Stanisław Socha</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Socha.html">Józef Socha</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marcin_Michon1.html">Marcin Michoń</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marcin_Michon2.html">Marciń Michoń</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Waclaw_Jirsak.html">Wacław Jirsak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Karolina_Ludik.html">Karolina Ludik</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Boro.html">Stanisław Boro</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Anna_Puzon.html">Anna Puzon</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Pirog.html">Jan Piróg</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Piotr_Zaraza.html">Piotr Zaraza</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jakub_Knych1.html">Jakub Knych</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_z_Parow_Smagaczowa.html">Regina z Parów Smagaczowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Maciej_Tryba.html">Maciej Tryba</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Toman_Socha.html">Toman Socha</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Sroka.html">Jan Sroka</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Gagala.html">Jozef Gagała</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Morycz.html">Jan Morycz</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Knych_syn.html">Jan Knych (syn)</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Zofia_z_Sakow_Stawarzowa.html">Zofia z Saków Stawarzowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marjanna_z_Rybow_Plazina.html">Marjanna z Rybów Płazina</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Weiss.html">Jan Weiss</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Walega.html">Stanisław Wałęga</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Mojzesz_Wachtel.html">Mojżesz Wachtel</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Berl_Grinstein.html">Berl Grinstein</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wigdor_Lisch.html">Wigdor Łisch</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Para_syn_Macieja.html">Jozef Para (syn Macieja)</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Para.html">Jan Para</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Agata_z_Pychow_Soszyna.html">Agata z Pychów Soszyna</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Augustyn.html">Jan Augustyn</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Lis.html">Józef Lis</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Lis.html">Wojciech Lis</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_z_Erazmusow_Lisowa.html">Regina z Erazmusów Lisowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Erazmus.html">Jan Erazmus</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Socha.html">Stanisław Socha</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Socha.html">Józef Socha</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jedrzej_Socha.html">Jędrzej Socha</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Josef_Sadowski.html">Josef Sadowski</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jakub_Para.html">Jakub Para</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_z_Augustynow_Plucina.html">Regina z Augustynów Plucina</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Augustyn.html">Wojciech Augustyn</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jakub_Sak.html">Jakub Sak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Labak.html">Wojciech Labak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Augustyn.html">Augustyn</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Bubulka.html">Jan Bubułka</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Pluta_syn_Jozefa.html">Jan Pluta (syn Józefa)</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Pluta.html">Stanisław Pluta</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Pluta.html">Józef Pluta</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Regina_Kramarczyk_z_Augustynow.html">Regina Kramarczyk z Augustynów</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Klimek.html">Jan Klimek</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wojciech_Sak.html">Wojciech Sak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Kubicki.html">Jan Kubicki</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Stanislaw_Skarbek.html">Stanisław Skarbek</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Pluta_syn_Wojciecha.html">Jan Pluta (syn Wojciecha)</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jozef_Sak.html">Józef Sak</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marek_Neuberl.html">Marek Neuberl</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Anna_Michoniowa.html">Anna Michoniowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Wawryniec_Barnas.html">Wawryniec Barnaś</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Augustyn.html">Jan Augustyn</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Slusarczyk.html">Jan Ślusarczyk</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Katarzyna_z_Jupkow_Michoniowa.html">Katarzyna z Jupków Michoniowa</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Marcin_Nosal.html">Nosal Marcin</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Agata_Labudzka.html">Agata Łabudzka</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Jan_Barnas.html">Jan Barnaś</a></div>
+            <!-- Przykładowa ikona -->
+            <div class="ownerIcon"><a href="Anton_Pacyne.html">Anton Pacyne</a></div>
+            <!-- Przykładowa ikona -->
+
+
+
+        </div>
+    </div>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="map-script.js"></script>
+    <script src="mapzoom.js"></script>
+
+    <script>
+        function openPage(url) {
+            window.location.href = url;
+        }
+    </script>
+
+</body>
+<script src="owner.js"></script>
+
+</html>

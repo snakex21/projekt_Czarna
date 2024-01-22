@@ -1,0 +1,613 @@
+body,
+html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#mapContainer {
+    display: flex;
+    flex: 1;
+    height: 80vh;
+}
+
+#map {
+    flex-grow: 1;
+    height: auto;
+    background-color: #e3c095;
+}
+
+#mouse-coordinates {
+    transition: transform 0.3s ease-in-out;
+    /* Smooth transition for moving the element */
+    position: absolute;
+    /* or fixed, depending on your layout */
+    top: 10px;
+    /* Adjust as necessary */
+    right: px;
+    /* Adjust as necessary */
+    z-index: 100;
+    /* Ensure it's above other elements */
+}
+
+#mouse-coordinates.hiddenPanel {
+    right: 20px;
+    /* Adjust to the width of your side panel */
+}
+
+#addParcelButton {
+    background-color: #4CAF50;
+    /* Kolor tła przycisku */
+    color: white;
+    /* Kolor tekstu */
+    padding: 15px 32px;
+    /* Wewnętrzny odstęp (góra/dół, lewo/prawo) */
+    text-align: center;
+    /* Wyrównanie tekstu */
+    text-decoration: none;
+    /* Brak dekoracji tekstu */
+    display: inline-block;
+    /* Typ wyświetlania */
+    font-size: 16px;
+    /* Rozmiar czcionki */
+    margin: 4px 2px;
+    /* Zewnętrzny odstęp */
+    cursor: pointer;
+    /* Kursor wskazujący na przycisk */
+    border: none;
+    /* Brak obramowania */
+    border-radius: 8px;
+    /* Zaokrąglenie rogów */
+    transition-duration: 0.4s;
+    /* Czas trwania efektu przejścia */
+}
+
+
+/* Efekt 'hover' (najechanie kursorem) */
+
+#addParcelButton:hover {
+    background-color: #45a049;
+    /* Zmiana koloru tła przy najechaniu */
+}
+
+
+/* Efekt 'active' (kliknięcie) */
+
+#addParcelButton:active {
+    background-color: #3e8e41;
+    /* Zmiana koloru tła przy kliknięciu */
+    box-shadow: 0 5px #666;
+    /* Cień */
+    transform: translateY(4px);
+    /* Lekkie przesunięcie w dół */
+}
+
+#slideout-panel {
+    width: 600px;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    right: -600px;
+    /* Start offscreen */
+    background: #f3f3f3;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.3);
+    transition: right 0.3s;
+}
+
+#slideout-panel.active {
+    right: 0;
+    /* Slide in */
+}
+
+#toggleButton {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+#hiddenPanel {
+    background-color: #fff;
+    /* Set the background to white */
+    width: 600px;
+    /* Set the width of the panel */
+    height: 100%;
+    /* Set the height to take up the full viewport height */
+    position: fixed;
+    /* Use fixed positioning */
+    top: 0;
+    /* Align to the top */
+    right: -600px;
+    /* Start off-screen to the right */
+    transition: right 0.5s;
+    /* Smooth transition for the sliding effect */
+    z-index: 1010;
+    /* Ensure it's above other elements */
+    padding: 20px;
+    /* Add some padding inside the panel */
+    box-sizing: border-box;
+    /* Include padding and border in the element's total width and height */
+    overflow-y: auto;
+    /* Add scroll to the form if it exceeds the viewport height */
+    display: flex;
+    /* Enable flexbox */
+    flex-direction: column;
+    /* Stack children vertically */
+}
+
+#hiddenPanel label,
+#hiddenPanel input[type="text"],
+#hiddenPanel button {
+    margin-bottom: 10px;
+    /* Space out the elements */
+}
+
+#parcelForm input#parcelNumber {
+    order: 2;
+}
+
+#backButton {
+    align-self: flex-start;
+    /* Align the back button to the start of the flex container */
+    padding: 10px 20px;
+    /* Padding for the back button */
+    background-color: #4CAF50;
+    /* Green background for the back button */
+    color: white;
+    /* White text */
+    border: none;
+    /* No border */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+    margin-bottom: 20px;
+    /* Extra space below the back button */
+}
+
+#hiddenPanel form {
+    width: 100%;
+    /* Form should take the full width of the panel */
+}
+
+#coordinateButtons {
+    display: flex;
+    justify-content: space-between;
+}
+
+#coordinateButtons button {
+    flex: 1;
+    /* Make buttons share the container space equally */
+    margin: 5px;
+    /* Add margin between buttons */
+}
+
+.coordinate {
+    display: flex;
+    /* Set to flex layout to align input fields in a row */
+    gap: 10px;
+    /* Add space between coordinate input fields */
+}
+
+.coordinate input[type="text"] {
+    flex: 1;
+    /* Coordinate input fields take up equal space */
+}
+
+#addCoordinate {
+    padding: 10px 20px;
+    /* Padding for add coordinate button */
+    background-color: #f0f0f0;
+    /* Light gray background */
+    border: 1px solid #ccc;
+    /* Border to distinguish the button */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+#removeCoordinate {
+    padding: 10px 20px;
+    /* Padding for add coordinate button */
+    background-color: #f0f0f0;
+    /* Light gray background */
+    border: 1px solid #ccc;
+    /* Border to distinguish the button */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+
+/* Style for the submit button */
+
+#hiddenPanel input[type="submit"] {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    /* Green background for the submit button */
+    color: white;
+    /* White text */
+    border: none;
+    /* No border */
+    border-radius: 4px;
+    /* Rounded corners */
+    cursor: pointer;
+    /* Pointer cursor on hover */
+}
+
+
+/*do 2 panelu*/
+
+#panel {
+    position: absolute;
+    top: 0;
+    left: -600px;
+    /* Width of the panel */
+    width: 600px;
+    /* Width of the panel */
+    height: 100%;
+    background-color: #111;
+    transition: left 0.5s;
+    z-index: 1000;
+    /* Make sure this is above the map's z-index */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.cancelButton {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 46px;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+}
+
+.orderNumber {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 46px;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+}
+
+
+/* Styl dla przycisku 'Dodaj Właściciela' */
+
+#addOwnerButton {
+    background-color: #4CAF50;
+    /* Kolor tła przycisku */
+    color: white;
+    /* Kolor tekstu */
+    padding: 15px 32px;
+    /* Wewnętrzny odstęp (góra/dół, lewo/prawo) */
+    text-align: center;
+    /* Wyrównanie tekstu */
+    text-decoration: none;
+    /* Brak dekoracji tekstu */
+    display: inline-block;
+    /* Typ wyświetlania */
+    font-size: 16px;
+    /* Rozmiar czcionki */
+    margin: 4px 2px;
+    /* Zewnętrzny odstęp */
+    cursor: pointer;
+    /* Kursor wskazujący na przycisk */
+    border: none;
+    /* Brak obramowania */
+    border-radius: 8px;
+    /* Zaokrąglenie rogów */
+    transition-duration: 0.4s;
+    /* Czas trwania efektu przejścia */
+}
+
+
+/* Efekt 'hover' (najechanie kursorem) */
+
+#addOwnerButton:hover {
+    background-color: #45a049;
+    /* Zmiana koloru tła przy najechaniu */
+}
+
+
+/* Efekt 'active' (kliknięcie) */
+
+#addOwnerButton:active {
+    background-color: #3e8e41;
+    /* Zmiana koloru tła przy kliknięciu */
+    box-shadow: 0 5px #666;
+    /* Cień */
+    transform: translateY(4px);
+    /* Lekkie przesunięcie w dół */
+}
+
+.side-panel {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index: 1000;
+    /* To ensure the form is above the map */
+}
+
+#addOwnerForm {
+    width: 549px;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    /* Adjust padding as needed */
+}
+
+#addOwnerForm>input,
+#addOwnerForm>textarea,
+#addOwnerForm>button {
+    margin-bottom: 10px;
+    /* Adjust spacing between form fields */
+    padding: 10px;
+    /* Adjust padding inside form fields */
+    width: 100%;
+    /* Full width of the form */
+    box-sizing: border-box;
+    /* Border and padding included in width */
+}
+
+#addOwnerForm>textarea {
+    height: 100px;
+    /* Adjust height of textareas */
+}
+
+#addOwnerForm>button {
+    cursor: pointer;
+    /* Hand cursor on hover over buttons */
+}
+
+#cancelButton {
+    align-self: flex-start;
+    /* Align the cancel button to the start of the flex container */
+}
+
+.side-panel a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.side-panel a:hover {
+    color: #f1f1f1;
+}
+
+#parcelsPanel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #7440f7;
+    gap: 1vw;
+    padding-top: 10px;
+}
+
+#parcelSearch {
+    width: 90%;
+    height: 47px;
+}
+
+#parcelList {
+    width: calc(10% - 20px);
+}
+
+.parcelIcon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: -5px;
+    background-color: #f4f4f4;
+    border: 2px solid blue;
+}
+
+.parcelIcon a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    line-height: 46px;
+    color: black;
+    text-decoration: none;
+    text-align: center;
+}
+
+::-webkit-scrollbar {
+    width: 12px;
+}
+
+::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+    background-color: #a52a2a;
+    border-radius: 6px;
+    border: 3px solid rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #d2691e;
+}
+
+#bottomPanel {
+    height: auto;
+    width: 100%;
+    background-color: #792626;
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+#ownerSearch {
+    padding: 10px;
+    margin-right: 80px;
+    width: calc(100% - 40px);
+    padding: 15px;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+#ownersList {
+    margin-left: 80px;
+    display: flex;
+    flex-grow: 1;
+    align-items: center;
+    overflow-x: auto;
+    padding-left: 31px;
+    gap: 0px;
+    height: 100%;
+    justify-content: flex-start;
+    /* Align items to the start of the container */
+}
+
+.ownerIcon {
+    margin: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 120px;
+    max-width: 180px;
+    font-size: 0.8em;
+    line-height: 1.5;
+    font-family: 'Arial', sans-serif;
+    font-weight: 500;
+    text-transform: uppercase;
+    padding: 10px;
+    background-color: #d3a87c;
+    border: 1px solid #a52a2a;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    cursor: pointer;
+    border-radius: 25px;
+    position: relative;
+}
+
+.ownerIcon:hover {
+    transform: scale(1.05);
+    background-color: #b96548;
+}
+
+.ownerIcon a {
+    color: inherit;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: flex;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+}
+
+
+/* Styl dla tekstu wewnątrz linku */
+
+
+/* Dodanie pseudoelementu, który rozszerzy klikalny obszar */
+
+
+/* Adding media queries for responsiveness */
+
+@media screen and (max-width: 768px) {
+    .ownerIcon {
+        margin: 5px;
+        min-width: 100px;
+        /* Smaller min-width for smaller screens */
+        max-width: 150px;
+        /* Smaller max-width for smaller screens */
+        font-size: 0.8em;
+        /* Smaller font size for smaller screens */
+    }
+}
+
+#ownerSearch {
+    padding: 10px;
+    margin-right: 80px;
+    /* Increase the right margin to create more space */
+    width: 30px;
+    /* Adjust to match the width of the blue markers */
+    max-width: 800px;
+    /* Set a max-width if you want to limit how wide it can get on very large screens */
+    min-width: 300px;
+    width: calc(100% - 40px);
+    padding: 15px;
+    font-size: 1.2em;
+    margin: 10px 0;
+}
+
+.side-panel {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+}
+
+#side-panel {
+    position: absolute;
+    top: 0;
+    left: -300px;
+    /* Assume the width of the panel is 300px */
+    width: 300px;
+    height: 100%;
+    background-color: white;
+    transition: left 0.5s;
+    z-index: 10;
+    /* Higher than the map z-index */
+}
+
+.side-panel a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+}
+
+.side-panel a:hover {
+    color: #f1f1f1;
+}
+
+@media screen and (min-resolution: 100dpi) {
+    body,
+    html {
+        transform: scale(0.8);
+        transform-origin: top left;
+        width: 125%;
+        height: 157%;
+    }
+}
